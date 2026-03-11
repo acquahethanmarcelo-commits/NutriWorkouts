@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriWorkouts</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<style>
+body { background: #f8f9fa; }
+.hero { background: linear-gradient(135deg, #ffc107, #ff9800); color: #fff; padding: 100px 0 50px; }
+.card:hover { transform: scale(1.05); transition: all 0.3s; }
+.navbar-brand { font-size: 1.8rem; }
+section { padding-top: 60px; }
+footer { margin-top: 50px; }
+.division { font-weight: bold; font-size: 1.2rem; margin-top: 10px; color: #ff9800; }
+.message { font-weight: bold; color: #28a745; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-warning" href="#">NutriWorkouts</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#quests">Quests</a></li>
+        <li class="nav-item"><a class="nav-link" href="#rewards">Rewards</a></li>
+        <li class="nav-item"><a class="nav-link" href="#leaderboard">Leaderboard</a></li>
+      </ul>
+      <button class="btn btn-warning ms-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero text-center mt-5 pt-5">
+  <h1>LEVEL UP YOUR NUTRITION</h1>
+  <p>Fuel your body. Conquer your goals.</p>
+  <button class="btn btn-dark btn-lg" onclick="scrollToQuests()">JOIN THE QUEST</button>
+</section>
+
+<section id="quests" class="container text-center mt-5">
+  <h2 class="mb-4">🎯 Complete Quests & Earn XP</h2>
+  <h4>Your XP: <span id="xp">0</span></h4>
+  <div class="division" id="division">Division: 10</div>
+  <div class="message" id="userMessage">Welcome! Start your journey and reach Gold to move up!</div>
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card p-4 shadow">
+        <h3>Daily Quest</h3>
+        <p>Drink 2L of water today.</p>
+        <button id="quest1" class="btn btn-success" onclick="completeQuest(100,'quest1')">Complete (+100 XP)</button>
+        <p id="timer1"></p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow">
+        <h3>Meal Plan</h3>
+        <p>Eat 3 healthy meals today.</p>
+        <button id="quest2" class="btn btn-success" onclick="completeQuest(170,'quest2')">Complete (+170 XP)</button>
+        <p id="timer2"></p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow">
+        <h3>Workout</h3>
+        <p>Finish a 30-minute workout.</p>
+        <button id="quest3" class="btn btn-success" onclick="completeQuest(200,'quest3')">Complete (+200 XP)</button>
+        <p id="timer3"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rewards" class="container text-center p-5">
+  <h2 class="mb-4">🏆Rewards</h2>
+  <div class="row">
+    <div class="col-md-4"><div class="card p-3 shadow"><h4>🥉 Bronze</h4><p>Unlock at 300 XP</p><p id="bronzeStatus">🔒 Locked</p></div></div>
+    <div class="col-md-4"><div class="card p-3 shadow"><h4>🥈 Silver</h4><p>Unlock at 600 XP</p><p id="silverStatus">🔒 Locked</p></div></div>
+    <div class="col-md-4"><div class="card p-3 shadow"><h4>🥇 Gold</h4><p>Unlock at 1000 XP</p><p id="goldStatus">🔒 Locked</p></div></div>
+  </div>
+</section>
+
+<section id="leaderboard" class="container text-center p-5">
+  <h2 class="mb-4">📊 Leaderboard</h2>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark"><tr><th>Rank</th><th>Name</th><th>XP</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td id="playerName">You</td><td id="leaderXP">0 XP</td></tr>
+      <tr><td>2</td><td>Nana Yaw</td><td>1100 XP</td></tr>
+      <tr><td>3</td><td>Michael</td><td>980 XP</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="modal fade" id="loginModal">
+  <div class="modal-dialog"><div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="formTitle">Login</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <input type="text" id="loginUser" class="form-control mb-3" placeholder="Username" required>
+          <input type="password" id="loginPass" class="form-control mb-3" placeholder="Password" required>
+          <button class="btn btn-warning w-100" type="submit">Login</button>
+        </form>
+        <form id="signupForm" style="display:none;">
+          <input type="text" id="newUser" class="form-control mb-3" placeholder="Create Username" required>
+          <input type="password" id="newPass" class="form-control mb-3" placeholder="Create Password" required>
+          <button class="btn btn-success w-100" type="submit">Create Account</button>
+        </form>
+        <p class="text-center mt-3"><span id="toggleText">Don't have an account?</span> <a href="#" onclick="toggleForm()" id="toggleLink">Create Account</a></p>
+      </div>
+  </div></div>
+</div>
+
+<footer class="text-center p-3 bg-dark text-white"><p>By Ethan Marcelo | Accra, Ghana</p></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===== USER DATA =====
+let currentUser = null;
+let xp = 0;
+let division = 10;
+let weekStart = null;
+
+// Load user data
+function loadUserData(user){
+    let userData = JSON.parse(localStorage.getItem("user_" + user)) || {xp:0,lastLogin:Date.now(),division:10,weekStart:Date.now()};
+    let now = Date.now();
+    if(now - userData.lastLogin > 24*60*60*1000) userData.xp = 0; // reset daily XP
+    if(now - userData.weekStart > 7*24*60*60*1000) userData.weekStart = now; // reset week
+    userData.lastLogin = now;
+    localStorage.setItem("user_" + user, JSON.stringify(userData));
+    xp = userData.xp;
+    division = userData.division;
+    weekStart = userData.weekStart;
+    updateXP();
+}
+
+// Save user data
+function saveUserData(){
+    if(currentUser){
+        localStorage.setItem("user_" + currentUser, JSON.stringify({xp: xp,lastLogin: Date.now(),division: division,weekStart: weekStart}));
+    }
+}
+
+// Update XP & division
+function updateXP(){
+    document.getElementById("xp").innerText = xp;
+    document.getElementById("leaderXP").innerText = xp + " XP";
+    updateDivision();
+    checkRewards();
+    saveUserData();
+    updateMessage();
+}
+
+// QUESTS
+const cooldown = 30*60*1000; // 30 minutes
+function completeQuest(points,id){
+    if(!currentUser){ alert("Please login first!"); return; }
+    let last = localStorage.getItem(currentUser + "_" + id);
+    let now = Date.now();
+    if(last && now - last < cooldown){
+        let remain = Math.ceil((cooldown - (now - last))/60000);
+        alert(`⏳ Wait ${remain} minutes before doing this quest again.`);
+        return;
+    }
+    xp += points;
+    // Gold timer
+    if(xp >= 1000 && division === 10 && !localStorage.getItem(currentUser + "_goldAchieved")){
+        localStorage.setItem(currentUser + "_goldAchieved", now);
+        alert("🎉 You reached Gold! Wait 7 days to move up to Division 9.");
+    }
+    let goldTime = localStorage.getItem(currentUser + "_goldAchieved");
+    if(goldTime && now - goldTime >= 7*24*60*60*1000 && division === 10){
+        division = 9;
+        alert("🎉 Congrats! You advanced to Division 9!");
+    }
+    localStorage.setItem(currentUser + "_" + id, now);
+    updateXP();
+}
+
+// REWARDS
+function checkRewards(){
+    document.getElementById("bronzeStatus").innerText = xp>=300?"✅ Unlocked":"🔒 Locked";
+    document.getElementById("silverStatus").innerText = xp>=600?"✅ Unlocked":"🔒 Locked";
+    document.getElementById("goldStatus").innerText = xp>=1000?"✅ Unlocked":"🔒 Locked";
+}
+
+// DIVISION
+function updateDivision(){ document.getElementById("division").innerText = "Division: " + division; }
+
+// MESSAGE
+function updateMessage(){
+    if(xp < 1000) document.getElementById("userMessage").innerText = "Keep going! Reach Gold to start climbing the divisions!";
+    else if(division === 10) document.getElementById("userMessage").innerText = "🎉 Gold reached! Wait 7 days to move up to Division 9!";
+    else document.getElementById("userMessage").innerText = "Awesome! Keep completing quests to move up further!";
+}
+
+// LOGIN
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let user = document.getElementById("loginUser").value.trim();
+    let pass = document.getElementById("loginPass").value;
+    let savedPass = localStorage.getItem("pass_" + user);
+    if(savedPass && savedPass === pass){
+        currentUser = user;
+        loadUserData(user);
+        document.getElementById("playerName").innerText = user;
+        alert("✅ Login successful!");
+        bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+    } else { alert("❌ Wrong username or password"); }
+});
+
+// SIGNUP
+document.getElementById("signupForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let user = document.getElementById("newUser").value.trim();
+    let pass = document.getElementById("newPass").value;
+    if(localStorage.getItem("pass_" + user)){ alert("❌ Username exists!"); return; }
+    localStorage.setItem("pass_" + user, pass);
+    localStorage.setItem("user_" + user, JSON.stringify({xp:0,lastLogin:Date.now(),division:10,weekStart:Date.now()}));
+    alert("✅ Account created! You can now login.");
+    toggleForm();
+});
+
+// TOGGLE LOGIN/SIGNUP
+function toggleForm(){
+    let login = document.getElementById("loginForm");
+    let signup = document.getElementById("signupForm");
+    let title = document.getElementById("formTitle");
+    let text = document.getElementById("toggleText");
+    let link = document.getElementById("toggleLink");
+    if(login.style.display !== "none"){
+        login.style.display="none"; signup.style.display="block";
+        title.innerText="Create Account"; text.innerText="Already have an account?"; link.innerText="Login";
+    } else {
+        login.style.display="block"; signup.style.display="none";
+        title.innerText="Login"; text.innerText="Don't have an account?"; link.innerText="Create Account";
+    }
+}
+
+function scrollToQuests(){ document.getElementById("quests").scrollIntoView({behavior:"smooth"}); }
+
+</script>
+</body>
+</html>
